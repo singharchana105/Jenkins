@@ -81,6 +81,75 @@ pipeline {
 }
 
 }
+```
+
+# Lets make DjangoCICD pipeline - declarative pipeline
+Project - I want developer commit the code on GitHub webhook automatically trigger and git clone on jenkins 
+
+Step 1. take any name of pipeline, GitHub project - paste URL, Build trigger -> Github hook trigger for GITscm polling
+
+Step 2. script
+
+```
+pipeline{
+   agent { label: "archu" }
+
+   stages {
+    stage("code"){
+      steps{
+        echo "This is cloning the code"
+        git url: "URL" , branch: main
+        echo "code clonnig sucessfull"
+      }
+
+    }
+    stage(Build){
+        steps{
+          echo "This is cloning the Build"
+          sh "whoami"
+          sh "docker build -t notes-app:latest ."
+        }
+
+    }
+    stage("Test"){
+        steps{
+          echo "This is cloning the test"
+        }
+
+    }
+    stage("Deploy"){
+        steps{
+          echo "This is cloning the Deploy"
+          sh "docker run -d -p 8000:8000 notes-app:latest"
+        }
+
+    }
+
+
+
+   }
+
+}
+
+
+
+```
+
+**Now I want to add pipeline use plugins -> add [pipeline stage view] plugins Install.**
+**Docker Install on Agent terminal -> sudo apt-get install docker.io** docker ps will give you permission denied error.
+so, for that use command -> sudo usermod -aG docker $USER && newgrp docker (refresh my docker group)
+
+
+```
+FROM python:3.9
+WORKDIR /app/backend
+COPY: requirement.txt /app/backend
+RUN: pip install -r requirement.txt
+COPY . /app/backend
+EXPOSE 8080
+CMD python /app/backend/manage.py runserver 0.0.0.0:8000
+
+```
 
 
 
