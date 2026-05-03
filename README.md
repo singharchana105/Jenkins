@@ -125,13 +125,8 @@ pipeline{
           echo "This is cloning the Deploy"
           sh "docker run -d -p 8000:8000 notes-app:latest"
         }
-
     }
-
-
-
    }
-
 }
 
 
@@ -272,7 +267,50 @@ def call(){
 }
 ```
 
-Step 3. Now Go to jenkins- Manage_jenkins - system - scrolled down or search for libraries - Global Trusted Pipeline Lib - click on [ADD] ,  Name - [Shared(kuch v rakh lijiye)], default version - [branchname like main] , Retrieval method - [Modern SCM] , Source Code Managent
+Step 3. Now Go to jenkins- Manage_jenkins - system - scrolled down or search for libraries - Global Trusted Pipeline Lib - click on [ADD] ,  Name - [Shared(kuch v rakh lijiye)], default version - [branchname like main] , Retrieval method - [Modern SCM] , Source Code Management - [Git] , Project Repository - [Code Clone Copy HTTPS from GITHUB paste it here] , click on SAVE.
+
+Step 4. Go to Pipeline script
+
+```
+@Library("Name of lib") _    [name of liberary vahi rhega jo jenkins ke name me dale the. after name of lib one space and _ is mendotory]
+pipeline{
+   agent { label: "archu" }
+
+   stages {
+    stage("Hello") {
+      steps{
+        hello()   #[Gitfilename]
+      }
+    }   
+    stage("Code"){
+      steps{
+       script{
+        clone("https://github.com/Londeshubham153/django-notes-app.git", "main") [Clone = git file name]
+       }       
+      }
+    }
+    stage("Build"){
+       steps{
+        script{
+          docker_build("notes-app", "latest", "archanakidocker")
+        }
+       }
+
+    }
+     stage("Push to DockerHub"){
+        script{
+         docker_push("notes-app", "latest", "archanakidocker")
+        }
+    }
+    stage("Deploy"){
+        steps{
+          echo "This is cloning the Deploy"
+          sh "docker run -d -p 8000:8000 notes-app:latest"
+        }
+    }
+
+
+  ```    
 
 
 
