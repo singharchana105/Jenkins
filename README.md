@@ -246,9 +246,33 @@ Step 2. payload URL : http://IPpubadressofec2:8080/github-webhook/   (github-web
 
 Step 3. Go to jenkins, Go to configuration,  In Build Trigger check the box of GutHub hook trigger for GITScm polling.
 
+Step 4. In Docker Compose file
+
+```
+version : "3.3"
+services :
+ web :
+ image: "archanakidocker/notes-app:latest"   (DockerHub se copy image)
+   ports :
+     - "8000:8000"
+
+```
 
 
 
+# Shared Libraries :It is a repository in which grovy code and code we will re-use in pipeline.
+**Step How to create Shared Libraries**
+Step 1. Go to GitHub create new repo like jenkins-lib and create It.
+
+Step 2. Create Jenkins-shared-libraries/vars/hello.groovy (folder and file hello.groovy [.groovy extension mendotory])
+
+``` hello.groovy
+def call(){
+  echo "Hello Dosto"
+}
+```
+
+Step 3. Now Go to jenkins- Manage_jenkins - system - scrolled down or search for libraries - Global Trusted Pipeline Lib - click on [ADD] ,  Name - [Shared(kuch v rakh lijiye)], default version - [branchname like main] , Retrieval method - [Modern SCM] , Source Code Managent
 
 
 
