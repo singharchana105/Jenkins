@@ -58,22 +58,23 @@ agent sucessfully connect and online.
 **Run this agent in declarative pipeline**
 ```
 pipeline {
-   agent {label: "archu"}
+   agent { label: "archu" }
    stages{
-     stage{
+     stage('Hello'){
        steps{
-              echo ()
+              echo 'Hello Dosto'
        }
     }
 }
    stages{
-     stage{
+     stage('Create Folder'){
        steps{
+         sh "mkdir -p devops"
        }
     }
 }
    stages{
-     stage{
+     stage('Bye'){
        steps{
       }
    }
