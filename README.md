@@ -215,7 +215,7 @@ its means dockerHubCred name ki id hai and password hai
 
     }
 
-Pushed to docker Hub
+Pushed to dockerHub
 
   stage("Push to DockerHub"){
         steps{
@@ -232,3 +232,23 @@ Pushed to docker Hub
     }
 
 ```
+
+
+
+# If i change in github jenkins automatically run.  GitHub Webhook
+
+Step 1. Go to GitHub Repo setting. Insights ke bagal wali setting. Not GitHub account setting.
+
+Step 2. payload URL : http://IPpubadressofec2:8080/github-webhook/   (github-webhook add this /github-webhook/)
+        content type: application/x-www-from-urlencoded,
+        SSL Verification : Disable (not recommended)
+        Send me everything (select) , Active, create webhook
+
+Step 3. Go to jenkins, Go to configuration,  In Build Trigger check the box of GutHub hook trigger for GITScm polling.
+
+
+
+
+
+
+
