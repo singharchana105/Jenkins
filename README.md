@@ -195,4 +195,40 @@ services :
 **docker stop containerID && docker rm containerID**
 
 
-# credintial Binding : 
+# Credentials Binding : To hide my Credentials in environment variables
+Go To Dashboard -> Manage Jenkins -> Credentials -> Stores Scoped to Jenkins (global) click -> add global credentials
+
+Username - Archanakidocker
+passsword - for password go to docker hub creating personal access tokens and paste token in password
+ID- dockerHubCred
+click on create
+its means dockerHubCred name ki id hai and password hai
+
+```
+  stage("Push to DockerHub"){
+        steps{
+          echo "This is Pushing image to docker hub"
+          sh "Docker Login"
+          sh "docker image tag notes-app:latest archanakidocker/notes-app:latest"
+          sh "docker archanakidocker/push notes-app:latest
+        }
+
+    }
+
+Pushed to docker Hub
+
+  stage("Push to DockerHub"){
+        steps{
+          echo "This is Pushing image to docker hub"
+          withCredentials([usernamePassword(
+                    credentialsId:"dockerHubCreds",
+                    usernameVariable:"dockerHubUser", 
+                    passwordVariable:"dockerHubPass")])
+          sh "docker login -u ${env.dockerHubUser} p ${env.dockerHubPass}"          
+          sh "docker image tag notes-app:latest ${env.dockerHubUser}/notes-app:latest"
+          sh "docker push ${env.dockerHubUser}/notes-app:latest
+        }
+
+    }
+
+```
