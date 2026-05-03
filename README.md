@@ -111,9 +111,12 @@ pipeline{
         }
 
     }
-    stage("Test"){
+    stage("Push to DockerHub"){
         steps{
-          echo "This is cloning the test"
+          echo "This is Pushing image to docker hub"
+          sh "Docker Login"
+          sh "docker image tag notes-app:latest archanakidocker/notes-app:latest"
+          sh "docker archanakidocker/push notes-app:latest
         }
 
     }
@@ -137,7 +140,8 @@ pipeline{
 
 **Now I want to add pipeline use plugins -> add [pipeline stage view] plugins Install.**
 **Docker Install on Agent terminal -> sudo apt-get install docker.io** docker ps will give you permission denied error.
-so, for that use command -> sudo usermod -aG docker $USER && newgrp docker (refresh my docker group)
+**so, for that use command -> sudo usermod -aG docker $USER && newgrp docker (refresh my docker group)**
+**8000 port add in EC2**
 
 
 ```
@@ -151,6 +155,44 @@ CMD python /app/backend/manage.py runserver 0.0.0.0:8000
 
 ```
 
+**You can also deploy your application through docker compose. why it need to deploy app on deocker compose?
+because if u deploy ur app on 8000 and again you build your application then deployment will be failed.
+allready running app on 8000.
+**So avoid using docker run command**
+
+```
+stage("Deploy"){
+        steps{
+          echo "This is cloning the Deploy"
+          sh "docker run -d -p 8000:8000 notes-app:latest"
+        }
+
+    }
+**Replace to this**
+    stage("Deploy"){
+        steps{
+          echo "This is cloning the Deploy"
+          sh "docker compose up -d"
+        }
+
+    }
+
+```
 
 
+**Docker Compose**
+```
+version : "3.3"
+services :
+ web :
+  build:
+   context:
+   ports :
+     - "8000:8000"
 
+```
+**Docker compose must be install in agent -> sudo apt-get install docker-compose-v2**
+**docker stop containerID && docker rm containerID**
+
+
+# credintial Binding : 
